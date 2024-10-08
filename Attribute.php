@@ -1,10 +1,33 @@
-<?php
+<?php declare(strict_types=1);
 
-namespace Livewire;
+namespace PhpParser\Node;
 
-use Livewire\Features\SupportAttributes\Attribute as BaseAttribute;
+use PhpParser\Node;
+use PhpParser\NodeAbstract;
 
-abstract class Attribute extends BaseAttribute
-{
-    //
+class Attribute extends NodeAbstract {
+    /** @var Name Attribute name */
+    public Name $name;
+
+    /** @var list<Arg> Attribute arguments */
+    public array $args;
+
+    /**
+     * @param Node\Name $name Attribute name
+     * @param list<Arg> $args Attribute arguments
+     * @param array<string, mixed> $attributes Additional node attributes
+     */
+    public function __construct(Name $name, array $args = [], array $attributes = []) {
+        $this->attributes = $attributes;
+        $this->name = $name;
+        $this->args = $args;
+    }
+
+    public function getSubNodeNames(): array {
+        return ['name', 'args'];
+    }
+
+    public function getType(): string {
+        return 'Attribute';
+    }
 }
