@@ -1,60 +1,45 @@
 {
-    "name": "pestphp/pest",
-    "description": "The elegant PHP Testing Framework.",
+    "name": "pestphp/pest-plugin-mutate",
+    "description": "Mutates your code to find untested cases",
     "keywords": [
         "php",
         "framework",
         "pest",
         "unit",
         "test",
-        "testing"
+        "testing",
+        "mutate",
+        "mutation",
+        "plugin"
     ],
     "license": "MIT",
     "authors": [
         {
-            "name": "Nuno Maduro",
-            "email": "enunomaduro@gmail.com"
+            "name": "Sandro Gehri",
+            "email": "sandrogehri@gmail.com"
         }
     ],
     "require": {
-        "php": "^8.2.0",
-        "brianium/paratest": "^7.5.5",
-        "nunomaduro/collision": "^8.4.0",
-        "nunomaduro/termwind": "^2.1.0",
+        "php": "^8.2",
+        "nikic/php-parser": "^5.2.0",
         "pestphp/pest-plugin": "^3.0.0",
-        "pestphp/pest-plugin-arch": "^3.0.0",
-        "pestphp/pest-plugin-mutate": "^3.0.5",
-        "phpunit/phpunit": "^11.3.6"
+        "psr/simple-cache": "^3.0.0"
     },
-    "conflict": {
-        "phpunit/phpunit": ">11.3.6",
-        "sebastian/exporter": "<6.0.0",
-        "webmozart/assert": "<1.11.0"
+    "require-dev": {
+        "pestphp/pest": "^3.0.8",
+        "pestphp/pest-dev-tools": "^3.0.0",
+        "pestphp/pest-plugin-type-coverage": "^3.0.0"
     },
     "autoload": {
         "psr-4": {
-            "Pest\\": "src/"
-        },
-        "files": [
-            "src/Functions.php",
-            "src/Pest.php"
-        ]
+            "Pest\\Mutate\\": "src/"
+        }
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\Fixtures\\Covers\\": "tests/Fixtures/Covers",
-            "Tests\\Fixtures\\Inheritance\\": "tests/Fixtures/Inheritance",
-            "Tests\\Fixtures\\Arch\\": "tests/Fixtures/Arch",
-            "Tests\\": "tests/PHPUnit/"
-        },
-        "files": [
-            "tests/Autoload.php"
-        ]
-    },
-    "require-dev": {
-        "pestphp/pest-dev-tools": "^3.0.0",
-        "pestphp/pest-plugin-type-coverage": "^3.0.0",
-        "symfony/process": "^7.1.5"
+            "Tests\\": "tests",
+            "Tests\\Tests\\": "tests/.tests"
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
@@ -65,58 +50,20 @@
             "pestphp/pest-plugin": true
         }
     },
-    "bin": [
-        "bin/pest"
-    ],
     "scripts": {
         "refacto": "rector",
         "lint": "pint",
         "test:refacto": "rector --dry-run",
         "test:lint": "pint --test",
-        "test:type:check": "phpstan analyse --ansi --memory-limit=-1 --debug",
-        "test:type:coverage": "php -d memory_limit=-1  bin/pest --type-coverage --min=100",
-        "test:unit": "php bin/pest --colors=always --exclude-group=integration --compact",
-        "test:inline": "php bin/pest --colors=always --configuration=phpunit.inline.xml",
-        "test:parallel": "php bin/pest --colors=always --exclude-group=integration --parallel --processes=3",
-        "test:integration": "php bin/pest --colors=always --group=integration -v",
-        "update:snapshots": "REBUILD_SNAPSHOTS=true php bin/pest --colors=always --update-snapshots",
+        "test:types": "phpstan analyse --ansi",
+        "test:type-coverage": "pest --type-coverage --min=100",
+        "test:unit": "pest --colors=always",
         "test": [
             "@test:refacto",
             "@test:lint",
-            "@test:type:check",
-            "@test:type:coverage",
-            "@test:unit",
-            "@test:parallel",
-            "@test:integration"
+            "@test:types",
+            "@test:type-coverage",
+            "@test:unit"
         ]
-    },
-    "extra": {
-        "pest": {
-            "plugins": [
-                "Pest\\Mutate\\Plugins\\Mutate",
-                "Pest\\Plugins\\Configuration",
-                "Pest\\Plugins\\Bail",
-                "Pest\\Plugins\\Cache",
-                "Pest\\Plugins\\Coverage",
-                "Pest\\Plugins\\Init",
-                "Pest\\Plugins\\Environment",
-                "Pest\\Plugins\\Help",
-                "Pest\\Plugins\\Memory",
-                "Pest\\Plugins\\Only",
-                "Pest\\Plugins\\Printer",
-                "Pest\\Plugins\\ProcessIsolation",
-                "Pest\\Plugins\\Profile",
-                "Pest\\Plugins\\Retry",
-                "Pest\\Plugins\\Snapshot",
-                "Pest\\Plugins\\Verbose",
-                "Pest\\Plugins\\Version",
-                "Pest\\Plugins\\Parallel"
-            ]
-        },
-        "phpstan": {
-            "includes": [
-                "extension.neon"
-            ]
-        }
     }
 }
